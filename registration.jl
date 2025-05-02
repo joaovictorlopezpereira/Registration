@@ -15,10 +15,30 @@ end
 
 
 # Returns an indicator matrix P such that P is in argmin_P ||X - YP||
+# (P is said to be an indicator matrix if it consists only of ones
+# and zeros, with exactly one 1 per column)
 function best_indicator(X, Y)
   nx = size(X, 2)
   ny = size(Y, 2)
   P = zeros(ny, nx)
+
+  # For each column of X
+  for i in 1:nx
+    # Find the nearest column of Y
+    best_j = -1
+    best_dist = Inf
+    for j in 1:ny
+      d = norm(X[:, i] - Y[:, j])
+      if d > best_dist
+        continue
+      end
+      best_j = j
+      best_dist = d
+    end
+
+    # Select it with P to minimize overall distance
+    P[best_j, i] = 1
+  end
 
   return P
 end
