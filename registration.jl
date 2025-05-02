@@ -8,8 +8,8 @@ using Plots
 
 # Returns an orthogonal matrix Q such that Q is in argmin_Q ||QX - Y||
 function procrustes(X, Y)
-  U, D, Vt = svd(Y * X')
-  Q = U * Vt
+  U, D, V = svd(Y * X')
+  Q = U * V'
   return Q
 end
 
