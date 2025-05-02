@@ -13,6 +13,23 @@ function procrustes(X, Y)
   return Q
 end
 
+# Returns orthogonal Q and some u such that || (QX .+ u) - Y|| is minimized
+# X and Y must have the same dimensions
+# (TODO: Find proof that this algorithm is correct)
+function best_rigid_transf(X, Y)
+  m, n = size(X)
+
+  # Average of the columns
+  x = 1/n * X * ones(n)
+  y = 1/n * Y * ones(n)
+
+  Q = procrustes(X .- x, Y .- y)
+  u = y - Q * x
+
+  return Q, u
+end
+
+
 
 # Returns an indicator matrix P such that P is in argmin_P ||X - YP||
 # (P is said to be an indicator matrix if it consists only of ones
@@ -47,9 +64,9 @@ end
 # Returns an orthogonal matrix Q and an indicator matrix Q such that P,Q are (approximately) in argmin_{P,Q} ||QA - BP||
 function point_matching(A, B;
                            iters = 100, # Defines "iters" as an optional argument which is set at 100 as default
-                           orthogonal = I(size(1, A))) # Defines "orthogonal" as a optional argument which is set as the Identity matrix as default
+                           orthogonal = I(size(A, 1))) # Defines "orthogonal" as a optional argument which is set as the Identity matrix as default
   P = zeros(size(B, 2), size(A, 2))
-  Q = orthogonal
+  Q = copy(orthogonal)
   for i in 1:iters
     P = best_indicator(Q*A, B)
     Q = procrustes(A, B*P)
@@ -63,7 +80,7 @@ function plot_matrices(matrices; return_plot=false)
   # Initializes plt as an empty plot
   plt = plot()
 
-  # Plots the first and second rows of each matrix as dots in R2
+  # Plots the first and second entries of each column of each matrix as dots in R2
   for (i, A) in enumerate(matrices)
     scatter!(plt, A[1, :], A[2, :], label = false)
   end
