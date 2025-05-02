@@ -1,2 +1,5 @@
 # LaTeX temporary files folder
 */temp-files
+
+# Vim backup files
+*.swp
