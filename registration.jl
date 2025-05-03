@@ -6,14 +6,15 @@ using Plots
 # TODO: Implement translations
 
 
-# Returns an orthogonal matrix Q such that Q is in argmin_Q ||QX - Y||
+# Returns an orthogonal matrix Q such that ||QX - Y|| is minimized
 function procrustes(X, Y)
   U, D, V = svd(Y * X')
   Q = U * V'
   return Q
 end
 
-# Returns orthogonal Q and some u such that || (QX .+ u) - Y|| is minimized
+
+# Returns an orthogonal matrix Q and some vector u such that ||(QX .+ u) - Y|| is minimized
 # X and Y must have the same dimensions
 # (TODO: Find proof that this algorithm is correct)
 function best_rigid_transf(X, Y)
@@ -30,8 +31,7 @@ function best_rigid_transf(X, Y)
 end
 
 
-
-# Returns an indicator matrix P such that P is in argmin_P ||X - YP||
+# Returns an indicator matrix P such that ||X - YP|| is minimized
 # (P is said to be an indicator matrix if it consists only of ones
 # and zeros, with exactly one 1 per column)
 function best_indicator(X, Y)
@@ -61,7 +61,7 @@ function best_indicator(X, Y)
 end
 
 
-# Returns an orthogonal matrix Q and an indicator matrix Q such that P,Q are (approximately) in argmin_{P,Q} ||QA - BP||
+# Returns an orthogonal matrix Q and an indicator matrix Q such that ||QA - BP|| is approximately minimized
 function point_matching(A, B;
                            iters = 100, # Defines "iters" as an optional argument which is set at 100 as default
                            orthogonal = I(size(A, 1))) # Defines "orthogonal" as a optional argument which is set as the Identity matrix as default
