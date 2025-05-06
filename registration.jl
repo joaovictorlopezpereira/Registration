@@ -76,21 +76,16 @@ end
 
 
 # Returns a plot with matrices plotted
-function plot_matrices(matrices; return_plot=false)
+function matrices_plot(matrices)
   # Initializes plt as an empty plot
   plt = plot()
 
   # Plots the first and second entries of each column of each matrix as dots in R2
-  for (i, A) in enumerate(matrices)
     scatter!(plt, A[1, :], A[2, :], label = false)
   end
 
-  # Returns or displays the plot
-  if (return_plot)
-    return plt
-  else
-    display(plt)
-  end
+  # Returns the plot
+  return plt
 end
 
 
@@ -101,7 +96,7 @@ function gif_point_matching(A, B; iters = 50, framerate = 5)
 
   anim = @animate for i in 1:iters
     P, Q = point_matching(A, B; iters=1, orthogonal=Q)
-    plt = plot_matrices([Q*A, B, B*P], return_plot=true)
+    plot(matrices_plot([Q*A .+ u, B]), xlims=(-1,3), ylims=(-1,3)) # Maybe B*P should be plotted as well. However, there might be a lot of dots in the screen
     print("iteration: $i\n")
     print("error: $(norm(Q*A - B*P))\n\n")
   end # maybe "end" should be indented right below "for"?
@@ -118,14 +113,16 @@ end
 
 # # Matrix that represents a square
 # M1 = [0.0 1.0 1.0 0.0;
-#      0.0 0.0 1.0 1.0]
+#       0.0 0.0 1.0 1.0]
 
 # # Matrix that represents (approximately) another square
 # M2 = [2.0000  2.7071  2.0000  1.2929;
-#      1.0000  1.7071  2.4142  1.7071]
+#       1.0000  1.7071  2.4142  1.7071]
 
 # M3 = [2.00 2.35 2.70 2.35 2.00 1.65 1.29 1.65;
-#      1.00 1.35 1.70 2.06 2.41 2.06 1.70 1.35]
+#       1.00 1.35 1.70 2.06 2.41 2.06 1.70 1.35]
 
-# savefig(plot_matrices([M1, M2]; return_plot=true), "testing-1.png") # Working!
-# savefig(plot_matrices([M1, M2, M3]; return_plot=true), "testing-2.png") # Working! (C is overwriting B in the plot, as intended)
+# savefig(matrices_plot([M1, M2]), "testing-1.png") # Working!
+# savefig(matrices_plot([M1, M2, M3]), "testing-2.png") # Working! (C is overwriting B in the plot, as intended)
+
+# gif_point_matching(M1, M3; iters = 5, framerate=1)
