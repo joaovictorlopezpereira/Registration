@@ -3,3 +3,7 @@
 
 # Vim backup files
 *.swp
+
+# Julia png and gif files
+*.png
+*.gif
