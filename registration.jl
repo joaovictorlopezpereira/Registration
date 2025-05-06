@@ -61,17 +61,18 @@ function best_indicator(X, Y)
 end
 
 
-# Returns an orthogonal matrix Q and an indicator matrix Q such that ||QA - BP|| is approximately minimized
+# Returns an orthogonal matrix Q, an indicator matrix P and a vector u such that ||QA .+ u - BP|| is approximately minimized
 function point_matching(A, B;
                            iters = 100, # Defines "iters" as an optional argument which is set at 100 as default
                            orthogonal = I(size(A, 1))) # Defines "orthogonal" as a optional argument which is set as the Identity matrix as default
   P = zeros(size(B, 2), size(A, 2))
   Q = copy(orthogonal)
-  for i in 1:iters
-    P = best_indicator(Q*A, B)
-    Q = procrustes(A, B*P)
+  u = zeros(size(A, 1))
+  for _ in 1:iters
+    Q, u = best_rigid_transf(A, B*P)
+    P = best_indicator(Q*A .+ u, B)
   end
-  return P, Q
+  return P, Q, u
 end
 
 
@@ -93,13 +94,19 @@ end
 function gif_point_matching(A, B; iters = 50, framerate = 5)
   Q = I(size(A, 1))
   P = zeros(size(B, 2), size(A, 2))
+  u = zeros(size(A, 1))
 
   anim = @animate for i in 1:iters
-    P, Q = point_matching(A, B; iters=1, orthogonal=Q)
+    # Some variable is probably being lost by calling point_matching each time, so the error will not change. If I had to guess, I'd say it is 'u'
+    # P, Q, u = point_matching(A, B; iters=1, orthogonal=Q)
+
+    Q, u = best_rigid_transf(A, B*P)
+    P = best_indicator(Q*A .+ u, B)
+
     plot(matrices_plot([Q*A .+ u, B]), xlims=(-1,3), ylims=(-1,3)) # Maybe B*P should be plotted as well. However, there might be a lot of dots in the screen
     print("iteration: $i\n")
-    print("error: $(norm(Q*A - B*P))\n\n")
   end # maybe "end" should be indented right below "for"?
+    print("error: $(norm(Q*A .+ u - B*P))\n\n")
 
   gif(anim, "point_matching.gif", fps = framerate)
 end
