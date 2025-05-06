@@ -88,7 +88,7 @@ end
 
 
 # Returns a GIF with a visualization of each iteration of the point_matching function
-function gif_point_matching(A, B; iters = 50, framerate = 5)
+function gif_point_matching(A, B; iters = 50, framerate = 1, gif_name = "point_matching.gif")
   Q = I(size(A, 1))
   P = zeros(size(B, 2), size(A, 2))
   u = zeros(size(A, 1))
@@ -100,12 +100,13 @@ function gif_point_matching(A, B; iters = 50, framerate = 5)
     Q, u = best_rigid_transf(A, B*P)
     P = best_indicator(Q*A .+ u, B)
 
-    plot(matrices_plot([Q*A .+ u, B]), xlims=(-1,3), ylims=(-1,3)) # Maybe B*P should be plotted as well. However, there might be a lot of dots in the screen
+    # TODO: Make xlims and ylims dynamic. If we don't set this value, then the plot will start changing its axis
+    plot(matrices_plot([Q*A .+ u, B]), xlims=(-3,10), ylims=(-1,10)) # Maybe B*P should be plotted as well. However, there might be a lot of dots in the screen
     print("iteration: $i\n")
     print("error: $(norm(Q*A .+ u - B*P))\n\n")
   end
 
-  gif(anim, "point_matching.gif", fps = framerate)
+  gif(anim, gif_name, fps = framerate)
 end
 
 
@@ -115,18 +116,19 @@ end
 #
 # %->8-------------------------------------------------------------------------------------------8<-%
 
-# # Matrix that represents a square
-# M1 = [0.0 1.0 1.0 0.0;
-#       0.0 0.0 1.0 1.0]
+# Returns a 2 by 2 rotation matrix given an angle in radians
+rotate_2d = (θ) ->[cos(θ) -sin(θ); sin(θ)  cos(θ)]
 
-# # Matrix that represents (approximately) another square
-# M2 = [2.0000  2.7071  2.0000  1.2929;
-#       1.0000  1.7071  2.4142  1.7071]
+# Defines smile faces
+original_smile_face = [1.3 1.7 1.0 1.50 2.0 1.2 1.8; 0.8 0.8 0.5 0.25 0.5 0.3 0.3]
+rotated_smile_face = rotate_2d(pi/4) * original_smile_face
+translated_smile_face = original_smile_face .+ [6.1; 2.5]
+noisy_big_translated_rotated_smile_face = rotate_2d(pi/3) * (hcat(original_smile_face, [original_smile_face + 0.05 * randn(2, size(original_smile_face,2)) for _ in 1:3]...)) .+ [-2.3; 7.2]
 
-# M3 = [2.00 2.35 2.70 2.35 2.00 1.65 1.29 1.65;
-#       1.00 1.35 1.70 2.06 2.41 2.06 1.70 1.35]
+# Plots all smile faces
+savefig(matrices_plot([original_smile_face, rotated_smile_face, translated_smile_face, noisy_big_translated_rotated_smile_face]), "test.png")
 
-# savefig(matrices_plot([M1, M2]), "testing-1.png") # Working!
-# savefig(matrices_plot([M1, M2, M3]), "testing-2.png") # Working! (C is overwriting B in the plot, as intended)
-
-# gif_point_matching(M1, M3; iters = 5, framerate=1)
+# Tests the point matching heuristic
+gif_point_matching(original_smile_face, rotated_smile_face; iters = 5, gif_name = "original_and_rotated.gif")
+gif_point_matching(original_smile_face, translated_smile_face; iters = 5, gif_name = "original_and_translated.gif")
+gif_point_matching(original_smile_face, noisy_big_translated_rotated_smile_face; iters = 5, gif_name = "original_and_all.gif")
