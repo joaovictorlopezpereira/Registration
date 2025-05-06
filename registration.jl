@@ -2,13 +2,9 @@ using LinearAlgebra
 using Plots
 
 
-# TODO: Implement best_indicator
-# TODO: Implement translations
-
-
 # Returns an orthogonal matrix Q such that ||QX - Y|| is minimized
 function procrustes(X, Y)
-  U, D, V = svd(Y * X')
+  U, _, V = svd(Y * X')
   Q = U * V'
   return Q
 end
@@ -82,6 +78,7 @@ function matrices_plot(matrices)
   plt = plot()
 
   # Plots the first and second entries of each column of each matrix as dots in R2
+  for (_, A) in enumerate(matrices)
     scatter!(plt, A[1, :], A[2, :], label = false)
   end
 
@@ -105,8 +102,8 @@ function gif_point_matching(A, B; iters = 50, framerate = 5)
 
     plot(matrices_plot([Q*A .+ u, B]), xlims=(-1,3), ylims=(-1,3)) # Maybe B*P should be plotted as well. However, there might be a lot of dots in the screen
     print("iteration: $i\n")
-  end # maybe "end" should be indented right below "for"?
     print("error: $(norm(Q*A .+ u - B*P))\n\n")
+  end
 
   gif(anim, "point_matching.gif", fps = framerate)
 end
