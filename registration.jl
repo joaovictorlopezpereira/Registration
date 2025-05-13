@@ -129,6 +129,6 @@ noisy_big_translated_rotated_smile_face = rotate_2d(pi/3) * (hcat(original_smile
 savefig(matrices_plot([original_smile_face, rotated_smile_face, translated_smile_face, noisy_big_translated_rotated_smile_face]), "test.png")
 
 # Tests the point matching heuristic
-gif_point_matching(original_smile_face, rotated_smile_face; iters = 5, gif_name = "original_and_rotated.gif")
-gif_point_matching(original_smile_face, translated_smile_face; iters = 5, gif_name = "original_and_translated.gif")
-gif_point_matching(original_smile_face, noisy_big_translated_rotated_smile_face; iters = 5, gif_name = "original_and_all.gif")
+gif_point_matching(original_smile_face, rotated_smile_face; iters = 10, gif_name = "original_and_rotated.gif")
+gif_point_matching(original_smile_face, translated_smile_face; iters = 10, gif_name = "original_and_translated.gif")
+gif_point_matching(original_smile_face, noisy_big_translated_rotated_smile_face; iters = 10, gif_name = "original_and_all.gif")
