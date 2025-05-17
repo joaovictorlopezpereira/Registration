@@ -1,4 +1,30 @@
 
+\section{Problema Desacoplado}
+
 \begin{frame}[fragile]
-  \frametitle{}
+  \frametitle{Problema Desacoplado}
+
+  \begin{center}
+    Se o problema fosse \[\argmin{Q} \fnorm{QA .+ \tau e\t - B},\] nós saberíamos resolvê-lo usando o SVD!
+
+  \pause
+
+  \[\argmin{Q} \fnorm{QA - B} = U V\t,\]
+
+  onde $B A\t = U \E V\t$.
+  \end{center}
+
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Problema Desacoplado}
+
+  \begin{center}
+    Se o problema fosse \[\argmin{P} \fnorm{A - BP},\] saberíamos resolvê-lo usando \texttt{for}!
+
+    \pause
+
+    Verificando todas as distâncias das colunas de uma matriz para a outra e colocando o valor $1$ na coluna da matriz $P$ relativa ao ponto de menor distância.
+  \end{center}
 \end{frame}
