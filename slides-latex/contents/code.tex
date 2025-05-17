@@ -1,0 +1,20 @@
+
+\section{Código}
+
+\begin{frame}[fragile]
+  \frametitle{Código}
+  \begin{code}
+    function point_matching(A, B; iters = 100)
+      P = zeros(size(B, 2), size(A, 2))
+      Q = I(size(A, 1))
+      t = zeros(size(A, 1))
+
+      for _ in 1:iters
+        Q, t = best_rigid_transf(A, B*P)
+        P = best_indicator(Q*A .+ t, B)
+      end
+
+      return P, Q, t
+    end
+  \end{code}
+\end{frame}
