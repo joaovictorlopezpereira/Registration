@@ -6,19 +6,19 @@
   \frametitle{Problema Desacoplado}
 
   \begin{center}
-    Se o problema fosse \[\argmin{Q} \fnorm{QA .+ u e\t - B},\] nós saberíamos resolvê-lo centralizando os pontos e usando o SVD!
+    Se o problema fosse \[\argmin{Q} \fnorm{Q\blue{A} .+ u e\t - \red{B}},\] nós saberíamos resolvê-lo centralizando os pontos e usando o SVD!
 
   \pause
 
-  \[\argmin{Q} \fnorm{QA - B} = U V\t,\]
+  \[\argmin{Q} \fnorm{Q\blue{A} - \red{B}} = U V\t,\]
 
-  onde $B A\t = U \E V\t$.
+  onde $\red{B} \blue{A}\t = U \E V\t$.
 
   \pause
 
-  \[\argmin{Q} \fnorm{QA .+ u e\t - B} = \bar{U} \bar{V}\t,\]
+  \[\argmin{Q} \fnorm{Q\blue{A} .+ t e\t - \red{B}} = \bar{U} \bar{V}\t,\]
 
-  onde $\bar{B} \bar{A}\t = \bar{U} \bar{\E} \bar{V}\t$ e $\bar{B}$ e $\bar{A}$ são $B$ e $A$ centralizados.
+  onde $\bar{\red{B}} \bar{\bar{A}}\t = \bar{U} \bar{\E} \bar{V}\t$ e $\bar{\red{B}}$ e $\bar{\blue{A}}$ são $\red{B}$ e $\blue{A}$ centralizados.
   \end{center}
 \end{frame}
 %->8-------------------------------------------------------------------------------------------8<-%
