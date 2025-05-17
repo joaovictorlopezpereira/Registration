@@ -12,16 +12,22 @@
 \usepackage{csquotes}
 \usepackage{upquote}
 \usepackage{hyperref}
+\usepackage{xcolor}
 \geometry{left=0.4cm, right=0.4cm}
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
 %->8-------------------------------------------------------------------------------------------8<-%
 
 %->8-------------------------------------------------------------------------------------------8<-%
 \usepackage{amsmath, amssymb, mathdots}
 \newcommand{\fnorm}[1]{\left\lVert#1\right\rVert_\mathsf{F}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
 \newcommand{\argmintext}{\text{argmin}}
 \newcommand{\argmin}[1]{\argmintext_{#1}\,\,}
 \renewcommand{\t}{^{\mathsf{T}\mkern-1mu}}
 \newcommand{\E}{\Sigma}
+\newcommand{\bigvert}{\rule[-1ex]{0.5pt}{6.8ex}}
+\renewcommand{\vert}{\rule[-1ex]{0.5pt}{2.5ex}}
 %->8-------------------------------------------------------------------------------------------8<-%
 
 %->8-------------------------------------------------------------------------------------------8<-%
@@ -57,21 +63,21 @@
 %->8-------------------------------------------------------------------------------------------8<-%
 
 %->8-------------------------------------------------------------------------------------------8<-%
-% \usetheme{Darmstadt} % Blue and white theme that John always uses
-\usetheme{Warsaw}
-\setbeamercolor{normal text}{fg=white,bg=black!90}
-\setbeamercolor{structure}{fg=white}
-\setbeamercolor{alerted text}{fg=red!85!black}
-\setbeamercolor{item projected}{use=item,fg=black,bg=item.fg!35}
-\setbeamercolor*{palette primary}{use=structure,fg=structure.fg}
-\setbeamercolor*{palette secondary}{use=structure,fg=structure.fg!95!black}
-\setbeamercolor*{palette tertiary}{use=structure,fg=structure.fg!90!black}
-\setbeamercolor*{palette quaternary}{use=structure,fg=structure.fg!95!black,bg=black!80}
-\setbeamercolor*{framesubtitle}{fg=white}
-\setbeamercolor*{block title}{parent=structure,bg=black!60}
-\setbeamercolor*{block body}{fg=black,bg=black!10}
-\setbeamercolor*{block title alerted}{parent=alerted text,bg=black!15}
-\setbeamercolor*{block title example}{parent=example text,bg=black!15}
+\usetheme{Darmstadt} % Blue and white theme that John always uses
+% \usetheme{Warsaw}
+% \setbeamercolor{normal text}{fg=white,bg=black!90}
+% \setbeamercolor{structure}{fg=white}
+% \setbeamercolor{alerted text}{fg=red!85!black}
+% \setbeamercolor{item projected}{use=item,fg=black,bg=item.fg!35}
+% \setbeamercolor*{palette primary}{use=structure,fg=structure.fg}
+% \setbeamercolor*{palette secondary}{use=structure,fg=structure.fg!95!black}
+% \setbeamercolor*{palette tertiary}{use=structure,fg=structure.fg!90!black}
+% \setbeamercolor*{palette quaternary}{use=structure,fg=structure.fg!95!black,bg=black!80}
+% \setbeamercolor*{framesubtitle}{fg=white}
+% \setbeamercolor*{block title}{parent=structure,bg=black!60}
+% \setbeamercolor*{block body}{fg=black,bg=black!10}
+% \setbeamercolor*{block title alerted}{parent=alerted text,bg=black!15}
+% \setbeamercolor*{block title example}{parent=example text,bg=black!15}
 % \setbeamertemplate{headline}{}
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{headline}{
