@@ -1,4 +1,32 @@
 
-\begin{frame}[fragile]
-  \frametitle{}
+\section{Heurística}
+
+%->8-------------------------------------------------------------------------------------------8<-%
+\begin{frame}
+  \frametitle{Exemplo do K-means}
+  \begin{itemize}
+    \item Sabemos resolver ``Qual é o representante mais próximo para esses pontos?'';
+    \item Sabemos resolver ``Quais são os melhores representantes para esses conjuntos de pontos?''
+    \item Mas não sabemos resolver ``Quais são os melhores conjuntos para esses pontos?''
+  \end{itemize}
+
+  \begin{center}
+    Heurística! (K-means)
+  \end{center}
 \end{frame}
+%->8-------------------------------------------------------------------------------------------8<-%
+
+%->8-------------------------------------------------------------------------------------------8<-%
+\begin{frame}[fragile]
+  \frametitle{Heurística}
+  \begin{itemize}
+    \item Sabemos resolver $\argmin{Q,u} \fnorm{QA .+ u e\t - B}$;
+    \item Sabemos resolver $\argmin{P} \fnorm{A - BP}$;
+    \item Mas não sabemos resolver $\argmin{Q,u,P} \fnorm{QA .+ u e\t - BP}.$
+  \end{itemize}
+
+  \begin{center}
+    Heurística!
+  \end{center}
+\end{frame}
+%->8-------------------------------------------------------------------------------------------8<-%
