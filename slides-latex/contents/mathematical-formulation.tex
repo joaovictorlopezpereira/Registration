@@ -1,4 +1,40 @@
+\section{Formulação Matemática}
 
 \begin{frame}[fragile]
-  \frametitle{}
+  \frametitle{Expressando o Point Matching}
+  \begin{center}
+    ``Escolher dentre as colunas'' pode ser um produto matricial:
+
+    \[
+      \begin{bmatrix}
+        \vert & \vert & \vert & \vert \\
+        b_1 & b_2 & b_3 & b_4 \\
+        \vert & \vert & \vert & \vert
+      \end{bmatrix}
+      =
+      \underbrace{\begin{bmatrix}
+        1 & 0 & 1 \\
+        0 & 0 & 0 \\
+        0 & 1 & 0 \\
+        0 & 0 & 0
+      \end{bmatrix}}_{P}
+      \begin{bmatrix}
+        \vert & \vert & \vert \\
+        b_1 & b_2 & b_3 \\
+        \vert & \vert & \vert
+      \end{bmatrix}
+    \]
+
+    $P$ é uma matriz indicadora!
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Formulação Matricial}
+  \begin{center}
+    Com $Q$ ortogonal e $P$ indicadora, encontrar
+    \[\argmin{Q,t,P} \norm{Q\blue{A} + t u\t - \red{B}P}^2,\]
+
+    dado um padrão $\blue{A}$ e um \textit{dataset} $\red{B}$.
+  \end{center}
 \end{frame}
