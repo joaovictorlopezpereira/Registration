@@ -8,13 +8,11 @@
   \begin{center}
     Se o problema fosse \[\argmin{Q} \fnorm{Q\blue{A} .+ u e\t - \red{B}},\] nós saberíamos resolvê-lo centralizando os pontos e usando o SVD!
 
-  \pause
 
   \[\argmin{Q} \fnorm{Q\blue{A} - \red{B}} = U V\t,\]
 
   onde $\red{B} \blue{A}\t = U \E V\t$.
 
-  \pause
 
   \[\argmin{Q} \fnorm{Q\blue{A} .+ t e\t - \red{B}} = \bar{U} \bar{V}\t,\]
 
@@ -32,7 +30,6 @@
       return U * V'
     end
   \end{code}
-  \pause
   \begin{code}
     function best_rigid_transf(X, Y)
       _, n = size(X)
@@ -54,7 +51,6 @@
   \begin{center}
     Se o problema fosse \[\argmin{P} \fnorm{A - BP},\] saberíamos resolvê-lo usando \texttt{for}!
 
-    \pause
     \vspace{1cm}
     Verificando todas as distâncias das colunas de uma matriz para a outra e colocando o valor $1$ na coluna da matriz $P$ relativa ao ponto de menor distância.
   \end{center}
