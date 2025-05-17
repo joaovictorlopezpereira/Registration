@@ -12,7 +12,6 @@ end
 
 # Returns an orthogonal matrix Q and some vector u such that ||(QX .+ u) - Y|| is minimized
 # X and Y must have the same dimensions
-# (TODO: Find proof that this algorithm is correct)
 function best_rigid_transf(X, Y)
   _, n = size(X)
 
@@ -78,7 +77,7 @@ function gif_point_matching(A, B; iters = 50, framerate = 1, gif_name = "point_m
   u = zeros(size(A, 1))
 
   anim = @animate for i in 1:iters
-    # Some variable is probably being lost by calling point_matching each time, so the error will not change. If I had to guess, I'd say it is 'u'
+    # Some variable is probably 'being lost' by calling point_matching each time, so the error will not change. If I had to guess, I'd say it is 'u'
     # P, Q, u = point_matching(A, B; iters=1, orthogonal=Q)
 
     Q, u = best_rigid_transf(A, B*P)
@@ -107,12 +106,12 @@ rotate_2d = (θ) ->[cos(θ) -sin(θ); sin(θ)  cos(θ)]
 original_smile_face = [1.3 1.7 1.0 1.50 2.0 1.2 1.8; 0.8 0.8 0.5 0.25 0.5 0.3 0.3]
 rotated_smile_face = rotate_2d(pi/4) * original_smile_face
 translated_smile_face = original_smile_face .+ [6.1; 2.5]
-noisy_big_translated_rotated_smile_face = rotate_2d(pi/3) * (hcat(original_smile_face, [original_smile_face + 0.05 * randn(2, size(original_smile_face,2)) for _ in 1:3]...)) .+ [-2.3; 7.2]
+noisy_translated_rotated_smile_face = rotate_2d(pi/3) * (hcat(original_smile_face, [original_smile_face + 0.05 * randn(2, size(original_smile_face,2)) for _ in 1:3]...)) .+ [-2.3; 7.2]
 
 # Plots all smile faces
-savefig(matrices_plot([original_smile_face, rotated_smile_face, translated_smile_face, noisy_big_translated_rotated_smile_face]), "all_faces.png")
+savefig(matrices_plot([original_smile_face, rotated_smile_face, translated_smile_face, noisy_translated_rotated_smile_face]), "all_faces.png")
 
 # Tests the point matching heuristic
 gif_point_matching(original_smile_face, rotated_smile_face; iters = 6, gif_name = "original_and_rotated.gif")
 gif_point_matching(original_smile_face, translated_smile_face; iters = 6, gif_name = "original_and_translated.gif")
-gif_point_matching(original_smile_face, noisy_big_translated_rotated_smile_face; iters = 6, gif_name = "original_and_all.gif")
+gif_point_matching(original_smile_face, noisy_translated_rotated_smile_face; iters = 6, gif_name = "original_and_all.gif")
