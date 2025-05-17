@@ -13,7 +13,6 @@
 \usepackage{upquote}
 \usepackage{hyperref}
 \geometry{left=0.4cm, right=0.4cm}
-\setbeamertemplate{navigation symbols}{}
 %->8-------------------------------------------------------------------------------------------8<-%
 
 %->8-------------------------------------------------------------------------------------------8<-%
@@ -73,6 +72,14 @@
 \setbeamercolor*{block body}{fg=black,bg=black!10}
 \setbeamercolor*{block title alerted}{parent=alerted text,bg=black!15}
 \setbeamercolor*{block title example}{parent=example text,bg=black!15}
+% \setbeamertemplate{headline}{}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{headline}{
+  \leavevmode
+  \hbox{\begin{beamercolorbox}[wd=\paperwidth,ht=2.5ex,dp=1.125ex]{section in head/foot}
+  \insertsectionnavigationhorizontal{\paperwidth}{}{}
+  \end{beamercolorbox}}
+}
 %->8-------------------------------------------------------------------------------------------8<-%
 
 %->8-------------------------------------------------------------------------------------------8<-%
