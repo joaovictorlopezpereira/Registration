@@ -5,17 +5,46 @@
   \frametitle{Problema Desacoplado}
 
   \begin{center}
-    Se o problema fosse \[\argmin{Q} \fnorm{QA .+ \tau e\t - B},\] nós saberíamos resolvê-lo usando o SVD!
+    Se o problema fosse \[\argmin{Q} \fnorm{QA .+ \tau e\t - B},\] nós saberíamos resolvê-lo centralizando os pontos e usando o SVD!
 
   \pause
 
   \[\argmin{Q} \fnorm{QA - B} = U V\t,\]
 
   onde $B A\t = U \E V\t$.
+
+  \pause
+
+  \[\argmin{Q} \fnorm{QA .+ \tau e\t - B} = \bar{U} \bar{V}\t,\]
+
+  onde $\bar{B} \bar{A}\t = \bar{U} \bar{\E} \bar{V}\t$ e $\bar{B}$ e $\bar{A}$ são $B$ e $A$ centralizados.
   \end{center}
-
-
 \end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Problema Desacoplado}
+  \begin{code}
+    function procrustes(X, Y)
+      U, _, V = svd(Y * X')
+      return U * V'
+    end
+  \end{code}
+  \pause
+  \begin{code}
+    function best_rigid_transf(X, Y)
+      _, n = size(X)
+
+      x = 1/n * X * ones(n)
+      y = 1/n * Y * ones(n)
+
+      Q = procrustes(X .- x, Y .- y)
+
+      return Q, y - Q * x
+    end
+  \end{code}
+\end{frame}
+
+
 
 \begin{frame}[fragile]
   \frametitle{Problema Desacoplado}
@@ -24,7 +53,24 @@
     Se o problema fosse \[\argmin{P} \fnorm{A - BP},\] saberíamos resolvê-lo usando \texttt{for}!
 
     \pause
-
+    \vspace{1cm}
     Verificando todas as distâncias das colunas de uma matriz para a outra e colocando o valor $1$ na coluna da matriz $P$ relativa ao ponto de menor distância.
   \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Problema Desacoplado}
+  \begin{code}
+    function best_indicator(X, Y)
+      nx, ny = size(X, 2), size(Y, 2)
+      P = zeros(ny, nx)
+
+      for i in 1:nx
+        best_j = argmin([norm(X[:, i] - Y[:, j]) for j in 1:ny])
+        P[best_j, i] = 1
+      end
+
+      return P
+    end
+  \end{code}
 \end{frame}
