@@ -6,17 +6,15 @@
   \frametitle{Problema Desacoplado}
 
   \begin{center}
-    Se o problema fosse \[\argmin{Q} \fnorm{Q\blue{A} .+ u e\t - \red{B}},\] nós saberíamos resolvê-lo centralizando os pontos e usando o SVD!
+    Se o problema fosse \[\argmin{Q,t} \fnorm{Q\blue{A} + t e\t - \red{B}},\] nós saberíamos resolvê-lo centralizando os pontos e usando o SVD!
 
 
-  \[\argmin{Q} \fnorm{Q\blue{A} - \red{B}} = U V\t,\]
-
-  onde $\red{B} \blue{A}\t = U \E V\t$.
+  \[\argmin{Q} \fnorm{Q\blue{A} - \red{B}} = U V\t\text{, onde } \red{B} \blue{A}\t = U \E V\t.\]
 
 
-  \[\argmin{Q} \fnorm{Q\blue{A} .+ t e\t - \red{B}} = \bar{U} \bar{V}\t,\]
+  \[Q , t \in \argmin{Q,t} \fnorm{Q\blue{A} + t e\t - \red{B}} \Leftarrow Q = \bar{U} \bar{V}\t \text{ e } t = \red{b} - Q\blue{a}\]
 
-  onde $\bar{\red{B}} \bar{\bar{A}}\t = \bar{U} \bar{\E} \bar{V}\t$ e $\bar{\red{B}}$ e $\bar{\blue{A}}$ são $\red{B}$ e $\blue{A}$ centralizados.
+  onde $\bar{\red{B}} \bar{\blue{A}}\t = \bar{U} \bar{\E} \bar{V}\t$ e $\bar{\red{B}}$ e $\bar{\blue{A}}$ são $\red{B}$ e $\blue{A}$ centralizados, $\red{b} = \dfrac{1}{n} \red{B} e$ e $\blue{a} = \dfrac{1}{n} \blue{A} e$.
   \end{center}
 \end{frame}
 %->8-------------------------------------------------------------------------------------------8<-%
@@ -49,7 +47,7 @@
   \frametitle{Problema Desacoplado}
 
   \begin{center}
-    Se o problema fosse \[\argmin{P} \fnorm{A - BP},\] saberíamos resolvê-lo usando \texttt{for}!
+    Se o problema fosse \[\argmin{P} \fnorm{\blue{A} - \red{B}P},\] saberíamos resolvê-lo usando \texttt{for}!
 
     \vspace{1cm}
     Verificando todas as distâncias das colunas de uma matriz para a outra e colocando o valor $1$ na coluna da matriz $P$ relativa ao ponto de menor distância.
