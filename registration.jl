@@ -1,5 +1,6 @@
 using LinearAlgebra
 using Plots
+import Random
 
 
 # Returns an orthogonal matrix Q such that ||QX - Y|| is minimized
@@ -58,7 +59,7 @@ end
 # Plots the first and second entries of each column of each matrix as dots in R2
 function scatter_cols!(plt, matrices; alpha = 1)
   for (_, A) in enumerate(matrices)
-    scatter!(plt, A[1, :], A[2, :], label = false, markeralpha = alpha)
+    scatter!(plt, A[1, :], A[2, :], label = false, markeralpha = alpha, markersize = 10)
   end
 end
 
@@ -80,21 +81,41 @@ function gif_point_matching(A, B; iters = 50, framerate = 1, gif_name = "point_m
   P = zeros(size(B, 2), size(A, 2))
   u = zeros(size(A, 1))
 
-  anim = @animate for i in 1:iters
-    # Some variable is probably 'being lost' by calling point_matching each time, so the error will not change. If I had to guess, I'd say it is 'u'
-    # P, Q, u = point_matching(A, B; iters=1, orthogonal=Q)
-
-    Q, u = best_rigid_transf(A, B*P)
+  # Compute the plots from the algorithm iterations
+  plts = []
+  for i in 1:iters
     P = best_indicator(Q*A .+ u, B)
+    Q, u = best_rigid_transf(A, B*P)
 
-    # TODO: Make xlims and ylims dynamic. If we don't set this value, then the plot will start changing its axis
     plt = plot()
     scatter_cols!(plt, [Q*A .+ u, B * P])
     scatter_cols!(plt, [B], alpha = 0.5)
-    plot(plt, xlims=(-3, 10), ylims=(-1, 10))
+
+    push!(plts, plt)
 
     print("iteration: $i\n")
     print("error: $(norm(Q*A .+ u - B*P))\n\n")
+  end
+
+  x_limits = (minimum(plt -> xlims(plt)[1], plts), maximum(plt -> xlims(plt)[2], plts))
+  y_limits = (minimum(plt -> ylims(plt)[1], plts), maximum(plt -> ylims(plt)[2], plts))
+
+  # Force x and y axis sizes to be equal, to maintain proportion
+  if y_limits[2] - y_limits[1] < x_limits[2] - x_limits[1]
+    y_limits = (y_limits[1], y_limits[1] + x_limits[2] - x_limits[1])
+  else
+    x_limits = (x_limits[1], x_limits[1] + y_limits[2] - y_limits[1])
+  end
+
+  zoom_out = 1.5
+  x_avg = (x_limits[1] + x_limits[2]) / 2
+  y_avg = (y_limits[1] + y_limits[2]) / 2
+  x_limits = (x_avg - zoom_out * (x_limits[2] - x_limits[1]) / 2, x_avg + zoom_out * (x_limits[2] - x_limits[1]) / 2)
+  y_limits = (y_avg - zoom_out * (y_limits[2] - y_limits[1]) / 2, y_avg + zoom_out * (y_limits[2] - y_limits[1]) / 2)
+
+
+  anim = @animate for i in 1:iters
+    plot(plts[i], xlims = x_limits, ylims = y_limits, aspect_ratio = :equal)
     savefig("$images_name" * "_" * "$i")
   end
 
@@ -108,11 +129,13 @@ end
 #
 # %->8-------------------------------------------------------------------------------------------8<-%
 
+Random.seed!(1234)
+
 # Returns a 2 by 2 rotation matrix given an angle in radians
 rotate_2d = (θ) ->[cos(θ) -sin(θ); sin(θ)  cos(θ)]
 
 # Defines smile faces
-original_smile_face = [1.3 1.7 1.0 1.50 2.0 1.2 1.8; 0.8 0.8 0.5 0.25 0.5 0.3 0.3]
+original_smile_face = [1.3 1.7 1.0 1.50 2.0 1.2 1.8; 1.0 1.0 0.5 0.25 0.5 0.3 0.3]
 rotated_smile_face = rotate_2d(pi/4) * original_smile_face
 translated_smile_face = original_smile_face .+ [6.1; 2.5]
 noisy_translated_rotated_smile_face = rotate_2d(pi/3) * (hcat(original_smile_face, [original_smile_face + 0.05 * randn(2, size(original_smile_face,2)) for _ in 1:3]...)) .+ [-2.3; 7.2]
