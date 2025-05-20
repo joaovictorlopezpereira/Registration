@@ -49,17 +49,17 @@ function point_matching(A, B;
   Q = copy(orthogonal)
   u = zeros(size(A, 1))
   for _ in 1:iters
-    Q, u = best_rigid_transf(A, B*P)
     P = best_indicator(Q*A .+ u, B)
+    Q, u = best_rigid_transf(A, B*P)
   end
   return P, Q, u
 end
 
 
 # Plots the first and second entries of each column of each matrix as dots in R2
-function scatter_cols!(plt, matrices; alpha = 1)
+function scatter_cols!(plt, matrices; alpha = 1, color)
   for (_, A) in enumerate(matrices)
-    scatter!(plt, A[1, :], A[2, :], label = false, markeralpha = alpha, markersize = 10)
+    scatter!(plt, A[1, :], A[2, :], label = false, markeralpha = alpha, markersize = 10, markercolor = color)
   end
 end
 
@@ -88,8 +88,9 @@ function gif_point_matching(A, B; iters = 50, framerate = 1, gif_name = "point_m
     Q, u = best_rigid_transf(A, B*P)
 
     plt = plot()
-    scatter_cols!(plt, [Q*A .+ u, B * P])
-    scatter_cols!(plt, [B], alpha = 0.5)
+    scatter_cols!(plt, [B], alpha = 0.5, color = :firebrick1)
+    scatter_cols!(plt, [B * P], color = :firebrick1)
+    scatter_cols!(plt, [Q*A .+ u], color = :lightseagreen)
 
     push!(plts, plt)
 
@@ -119,7 +120,7 @@ function gif_point_matching(A, B; iters = 50, framerate = 1, gif_name = "point_m
     savefig("$images_name" * "_" * "$i")
   end
 
-  gif(anim, gif_name, fps = framerate)
+  # gif(anim, gif_name, fps = framerate)
 end
 
 
@@ -134,16 +135,32 @@ Random.seed!(1234)
 # Returns a 2 by 2 rotation matrix given an angle in radians
 rotate_2d = (θ) ->[cos(θ) -sin(θ); sin(θ)  cos(θ)]
 
+stick_figure = [0 -1 -0.5 0 0.5 1 0 -1 1 -0.5 0 0 0.5; 0 -2 -1.5 -1 -1.5 -2 1 1 1 2 1.5 2.5 2]
+rotated_stick_figure = rotate_2d(pi/4) * stick_figure
+gif_point_matching(rotated_stick_figure, stick_figure; iters = 6, gif_name = "stick_figure.gif", images_name = "stick")
+
+flag = [-2 -1 -1 -1 0 0 0 0 0 1; 0 1 0 -2 2 1 0 -1 -2 -2]
+triangle = [0 2 2; 0 0 2]
+# rotated_flag = rotate_2d(pi/4) * flag
+gif_point_matching(triangle, flag; iters = 6, gif_name = "flag1.gif", images_name = "flag1")
+gif_point_matching(triangle .+ [0; -1], flag; iters = 6, gif_name = "flag2.gif", images_name = "flag2")
+
+s = sin(pi/6)
+c = cos(pi/6)
+molecule = [-c -c 0 0 0 0 c c 2*c 2*c 3*c 3*c 4*c; s -s 2 1 -1 -2 s -s 1 -1 s -s 1]
+chain = [-c -c 0 0 0 c c ; s -s 2 1 -1 s -s]
+gif_point_matching(chain .+ [3; 2], molecule; iters = 8, gif_name = "molecule.gif", images_name = "molecule")
+
 # Defines smile faces
 original_smile_face = [1.3 1.7 1.0 1.50 2.0 1.2 1.8; 1.0 1.0 0.5 0.25 0.5 0.3 0.3]
 rotated_smile_face = rotate_2d(pi/4) * original_smile_face
 translated_smile_face = original_smile_face .+ [6.1; 2.5]
-noisy_translated_rotated_smile_face = rotate_2d(pi/3) * (hcat(original_smile_face, [original_smile_face + 0.05 * randn(2, size(original_smile_face,2)) for _ in 1:3]...)) .+ [-2.3; 7.2]
+noisy_translated_rotated_smile_face = (hcat(original_smile_face, [original_smile_face + 0.05 * randn(2, size(original_smile_face,2)) for _ in 1:3]...)) .+ [2; 7]
 
 # Plots all smile faces
-savefig(matrices_plot([original_smile_face, rotated_smile_face, translated_smile_face, noisy_translated_rotated_smile_face]), "all_faces.png")
+# savefig(matrices_plot([original_smile_face, rotated_smile_face, translated_smile_face, noisy_translated_rotated_smile_face]), "all_faces.png")
 
 # Tests the point matching heuristic
-gif_point_matching(original_smile_face, rotated_smile_face; iters = 6, gif_name = "original_and_rotated.gif", images_name="rotated")
-gif_point_matching(original_smile_face, translated_smile_face; iters = 6, gif_name = "original_and_translated.gif", images_name="translated")
-gif_point_matching(original_smile_face, noisy_translated_rotated_smile_face; iters = 6, gif_name = "original_and_all.gif", images_name="noisy")
+# gif_point_matching(original_smile_face, rotated_smile_face; iters = 6, gif_name = "original_and_rotated.gif", images_name="rotated")
+gif_point_matching(original_smile_face, translated_smile_face; iters = 6, gif_name = "translated.gif", images_name="translated")
+gif_point_matching(original_smile_face, noisy_translated_rotated_smile_face; iters = 6, gif_name = "noisy.gif", images_name="noisy")
