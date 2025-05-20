@@ -55,15 +55,19 @@ function point_matching(A, B;
 end
 
 
+# Plots the first and second entries of each column of each matrix as dots in R2
+function scatter_cols!(plt, matrices; alpha = 1)
+  for (_, A) in enumerate(matrices)
+    scatter!(plt, A[1, :], A[2, :], label = false, markeralpha = alpha)
+  end
+end
+
 # Returns a plot with matrices plotted
 function matrices_plot(matrices)
   # Initializes plt as an empty plot
   plt = plot()
 
-  # Plots the first and second entries of each column of each matrix as dots in R2
-  for (_, A) in enumerate(matrices)
-    scatter!(plt, A[1, :], A[2, :], label = false)
-  end
+  scatter_cols!(plt, matrices)
 
   # Returns the plot
   return plt
@@ -84,7 +88,11 @@ function gif_point_matching(A, B; iters = 50, framerate = 1, gif_name = "point_m
     P = best_indicator(Q*A .+ u, B)
 
     # TODO: Make xlims and ylims dynamic. If we don't set this value, then the plot will start changing its axis
-    plot(matrices_plot([Q*A .+ u, B]), xlims=(-3,10), ylims=(-1,10)) # Maybe B*P should be plotted as well. However, there might be a lot of dots in the screen
+    plt = plot()
+    scatter_cols!(plt, [Q*A .+ u, B * P])
+    scatter_cols!(plt, [B], alpha = 0.5)
+    plot(plt, xlims=(-3, 10), ylims=(-1, 10))
+
     print("iteration: $i\n")
     print("error: $(norm(Q*A .+ u - B*P))\n\n")
     savefig("$images_name" * "_" * "$i")
