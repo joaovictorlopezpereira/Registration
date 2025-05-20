@@ -71,7 +71,7 @@ end
 
 
 # Returns a GIF with a visualization of each iteration of the point_matching function
-function gif_point_matching(A, B; iters = 50, framerate = 1, gif_name = "point_matching.gif")
+function gif_point_matching(A, B; iters = 50, framerate = 1, gif_name = "point_matching.gif", images_name = "gif_")
   Q = I(size(A, 1))
   P = zeros(size(B, 2), size(A, 2))
   u = zeros(size(A, 1))
@@ -87,6 +87,7 @@ function gif_point_matching(A, B; iters = 50, framerate = 1, gif_name = "point_m
     plot(matrices_plot([Q*A .+ u, B]), xlims=(-3,10), ylims=(-1,10)) # Maybe B*P should be plotted as well. However, there might be a lot of dots in the screen
     print("iteration: $i\n")
     print("error: $(norm(Q*A .+ u - B*P))\n\n")
+    savefig("$images_name" * "_" * "$i")
   end
 
   gif(anim, gif_name, fps = framerate)
@@ -112,6 +113,6 @@ noisy_translated_rotated_smile_face = rotate_2d(pi/3) * (hcat(original_smile_fac
 savefig(matrices_plot([original_smile_face, rotated_smile_face, translated_smile_face, noisy_translated_rotated_smile_face]), "all_faces.png")
 
 # Tests the point matching heuristic
-gif_point_matching(original_smile_face, rotated_smile_face; iters = 6, gif_name = "original_and_rotated.gif")
-gif_point_matching(original_smile_face, translated_smile_face; iters = 6, gif_name = "original_and_translated.gif")
-gif_point_matching(original_smile_face, noisy_translated_rotated_smile_face; iters = 6, gif_name = "original_and_all.gif")
+gif_point_matching(original_smile_face, rotated_smile_face; iters = 6, gif_name = "original_and_rotated.gif", images_name="rotated")
+gif_point_matching(original_smile_face, translated_smile_face; iters = 6, gif_name = "original_and_translated.gif", images_name="translated")
+gif_point_matching(original_smile_face, noisy_translated_rotated_smile_face; iters = 6, gif_name = "original_and_all.gif", images_name="noisy")
