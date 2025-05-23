@@ -20,26 +20,26 @@
 %->8-------------------------------------------------------------------------------------------8<-%
 
 %->8-------------------------------------------------------------------------------------------8<-%
-\begin{frame}[fragile]
-  \frametitle{Problema Desacoplado}
-  \begin{code}
-    function procrustes(X, Y)
-      U, _, V = svd(Y * X')
-      return U * V'
-    end
-  \end{code}
-  \begin{code}
-    function best_rigid_transf(X, Y)
-      _, n = size(X)
+% \begin{frame}[fragile]
+%   \frametitle{Problema Desacoplado}
+%   \begin{code}
+%     function procrustes(X, Y)
+%       U, _, V = svd(Y * X')
+%       return U * V'
+%     end
+%   \end{code}
+%   \begin{code}
+%     function best_rigid_transf(X, Y)
+%       _, n = size(X)
 
-      x = 1/n * X * ones(n)
-      y = 1/n * Y * ones(n)
-      Q = procrustes(X .- x, Y .- y)
+%       x = 1/n * X * ones(n)
+%       y = 1/n * Y * ones(n)
+%       Q = procrustes(X .- x, Y .- y)
 
-      return Q, y - Q * x
-    end
-  \end{code}
-\end{frame}
+%       return Q, y - Q * x
+%     end
+%   \end{code}
+% \end{frame}
 %->8-------------------------------------------------------------------------------------------8<-%
 
 %->8-------------------------------------------------------------------------------------------8<-%
@@ -66,20 +66,20 @@
 %->8-------------------------------------------------------------------------------------------8<-%
 
 %->8-------------------------------------------------------------------------------------------8<-%
-\begin{frame}[fragile]
-  \frametitle{Problema Desacoplado}
-  \begin{code}
-    function best_indicator(X, Y)
-      nx, ny = size(X, 2), size(Y, 2)
-      P = zeros(ny, nx)
+% \begin{frame}[fragile]
+%   \frametitle{Problema Desacoplado}
+%   \begin{code}
+%     function best_indicator(X, Y)
+%       nx, ny = size(X, 2), size(Y, 2)
+%       P = zeros(ny, nx)
 
-      for i in 1:nx
-        best_j = argmin([norm(X[:, i] - Y[:, j]) for j in 1:ny])
-        P[best_j, i] = 1
-      end
+%       for i in 1:nx
+%         best_j = argmin([norm(X[:, i] - Y[:, j]) for j in 1:ny])
+%         P[best_j, i] = 1
+%       end
 
-      return P
-    end
-  \end{code}
-\end{frame}
+%       return P
+%     end
+%   \end{code}
+% \end{frame}
 %->8-------------------------------------------------------------------------------------------8<-%

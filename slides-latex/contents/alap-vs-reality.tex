@@ -8,7 +8,9 @@
     \includegraphics[width=0.75\textwidth]{procrustes.png}
   \end{figure}
 
-  \[\argmin{Q} \fnorm{Q\blue{A} - \red{B}}^2 \text{  ou  } \argmin{Q} \sum_{i=1}^{n} \norm{Q\blue{a_i} - \red{b_i}}^2\]
+  \[\argmin{Q} \sum_{i=1}^{n} \norm{Q\blue{a_i} - \red{b_i}}^2\]
+  \[=\]
+  \[\argmin{Q} \fnorm{Q\blue{A} - \red{B}}^2\]
 \end{frame}
 
 \begin{frame}[fragile]
